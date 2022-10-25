@@ -85,7 +85,7 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
               component={Link}
               to={action.route}
               variant="h5"
-              textTransform="capitalize"
+              textTrasnsform="capitalize"
             >
               {title}
             </MDTypography>
@@ -96,7 +96,7 @@ function DefaultProjectCard({ image, label, title, description, action, authors 
               target="_blank"
               rel="noreferrer"
               variant="h5"
-              textTransform="capitalize"
+              textTrasnsform="capitalize"
             >
               {title}
             </MDTypography>

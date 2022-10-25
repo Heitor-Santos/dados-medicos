@@ -53,10 +53,10 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Scrap Data",
+    name: "Dados",
     key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/scrap-data",
+    icon: <Icon fontSize="small">storage</Icon>,
+    route: "/dados",
     component: <Profile />,
   },
 ];
