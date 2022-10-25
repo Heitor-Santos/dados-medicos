@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/dados-medicos/static/js/main.0e56bf36.js",
+    "static/media/bg-profile.jpeg": "/dados-medicos/static/media/bg-profile.af1219a742e09fc7b612.jpeg",
+    "static/media/alertas-nacionais.jpg": "/dados-medicos/static/media/alertas-nacionais.684e516a496402696115.jpg",
+    "static/media/mapa-interativo.jpg": "/dados-medicos/static/media/mapa-interativo.186cfddb147c05561d9e.jpg",
+    "static/media/relacao-busca-caso.jpg": "/dados-medicos/static/media/relacao-busca-caso.45d98b44bf13e549532f.jpg",
+    "index.html": "/dados-medicos/index.html"
+  },
+  "entrypoints": [
+    "static/js/main.0e56bf36.js"
+  ]
+}
