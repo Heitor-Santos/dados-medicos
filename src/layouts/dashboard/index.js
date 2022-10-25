@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /**
 =========================================================
 * Material Dashboard 2 React - v2.1.0
@@ -23,149 +24,99 @@ import MDBox from "components/MDBox";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
-import Plotly from 'plotly.js';
 import ReportsLineChart from "examples/Charts/LineCharts/ReportsLineChart";
 import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatisticsCard";
 
 // Data
 import data from "layouts/merge_frame";
+import humanData from "layouts/human_complete";
+import pnhData from "layouts/pnh_complete";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 
 // Dashboard components
 import Projects from "layouts/dashboard/components/Projects";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
 
+import MapChart from "layouts/dashboard/components/MapChart";
+import { Slider } from "@mui/material";
+import Box from "@mui/material/Box";
+
+const marks = [
+  {
+    value: 0,
+    label: "2000",
+  },
+  {
+    value: 12.5,
+    label: "2003",
+  },
+  {
+    value: 25,
+    label: "2005",
+  },
+  {
+    value: 37.5,
+    label: "2007",
+  },
+  {
+    value: 50,
+    label: "2009",
+  },
+  {
+    value: 62.5,
+    label: "2011",
+  },
+  {
+    value: 75,
+    label: "2013",
+  },
+  {
+    value: 100,
+    label: "2015",
+  },
+];
+
+const anos = [2000, 2003, 2005, 2007, 2009, 2011, 2013, 2015];
+
+function valuetext(value) {
+  return `${value}°C`;
+}
+
+function valueLabelFormat(value) {
+  return marks.findIndex((mark) => mark.value === value) + 1;
+}
+
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
+  const [selectedYear, setSelectedYear] = useState(2000);
+  const [selectedDataIndex, setSelectedDataIndex] = useState(0);
+
   useEffect(() => {
-    var trace1 = {
-      x: data.ANO,
-      y: data["Ocorrencias_x"],
-      type: 'scatter'
-    };
-    
-    var trace2 = {
-      x: data.ANO,
-      y: data["Ocorrencias_y"],
-      type: 'scatter'
-    };
-    Plotly.newPlot("grafico1", [trace1, trace2])
-  },[])
+    const index = marks.findIndex((mark) => mark.value === selectedYear);
+    setSelectedDataIndex(index);
+  }, [selectedYear]);
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox py={3}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="dark"
-                icon="weekend"
-                title="Bookings"
-                count={281}
-                percentage={{
-                  color: "success",
-                  amount: "+55%",
-                  label: "than lask week",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                icon="leaderboard"
-                title="Today's Users"
-                count="2,300"
-                percentage={{
-                  color: "success",
-                  amount: "+3%",
-                  label: "than last month",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="success"
-                icon="store"
-                title="Revenue"
-                count="34k"
-                percentage={{
-                  color: "success",
-                  amount: "+1%",
-                  label: "than yesterday",
-                }}
-              />
-            </MDBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={3}>
-            <MDBox mb={1.5}>
-              <ComplexStatisticsCard
-                color="primary"
-                icon="person_add"
-                title="Followers"
-                count="+91"
-                percentage={{
-                  color: "success",
-                  amount: "",
-                  label: "Just updated",
-                }}
-              />
-            </MDBox>
-          </Grid>
-        </Grid>
-        <MDBox mt={4.5}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <div id="grafico1"></div>
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="success"
-                  title="daily sales"
-                  description={
-                    <>
-                      (<strong>+15%</strong>) increase in today sales.
-                    </>
-                  }
-                  date="updated 4 min ago"
-                  chart={sales}
-                />
-              </MDBox>
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <MDBox mb={3}>
-                <ReportsLineChart
-                  color="dark"
-                  title="completed tasks"
-                  description="Last Campaign Performance"
-                  date="just updated"
-                  chart={tasks}
-                />
-              </MDBox>
-            </Grid>
-          </Grid>
-        </MDBox>
-        <MDBox>
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6} lg={8}>
-              <Projects />
-            </Grid>
-            <Grid item xs={12} md={6} lg={4}>
-              <OrdersOverview />
-            </Grid>
-          </Grid>
-        </MDBox>
-      </MDBox>
-      <Footer />
+      <div style={{ display: "flex" }}>
+        <MapChart title="Febre Amarela em Humanos" data={humanData[selectedDataIndex].estados} />
+        <MapChart title="Febre Amarela em PNHs" data={pnhData[selectedDataIndex].estados} />
+      </div>
+      <Box sx={{ width: "100%" }}>
+        <Slider
+          aria-label="Restricted values"
+          defaultValue={50}
+          valueLabelFormat={valueLabelFormat}
+          getAriaValueText={valuetext}
+          step={null}
+          valueLabelDisplay="auto"
+          marks={marks}
+          onChange={(e, val) => setSelectedYear(val)}
+        />
+      </Box>
     </DashboardLayout>
   );
 }
