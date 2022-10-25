@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import highchartsMap from "highcharts/modules/map";
 import mapDataBR from "@highcharts/map-collection/countries/br/br-all.geo.json";
 
 // eslint-disable-next-line react/prop-types
-function MapChart({ title, data }) {
+function MapChart({ title, color, data }) {
   const mapOptions = {
     chart: {
       map: "countries/br/br-all",
-      width: 500,
+      width: "600",
     },
     title: {
       text: title,
@@ -16,7 +17,6 @@ function MapChart({ title, data }) {
     credits: {
       enabled: false,
     },
-
     mapNavigation: {
       enabled: true,
       buttonOptions: {
@@ -26,6 +26,7 @@ function MapChart({ title, data }) {
 
     colorAxis: {
       min: 0,
+      maxColor: color,
     },
 
     series: [

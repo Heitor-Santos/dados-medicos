@@ -34,13 +34,10 @@ import pnhData from "layouts/pnh_complete";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import React, { useEffect, useState } from "react";
 
-// Dashboard components
-import Projects from "layouts/dashboard/components/Projects";
-import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
-
 import MapChart from "layouts/dashboard/components/MapChart";
 import { Slider } from "@mui/material";
 import Box from "@mui/material/Box";
+import LineChart from "./components/LineChart";
 
 const marks = [
   {
@@ -77,8 +74,6 @@ const marks = [
   },
 ];
 
-const anos = [2000, 2003, 2005, 2007, 2009, 2011, 2013, 2015];
-
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -90,7 +85,7 @@ function valueLabelFormat(value) {
 function Dashboard() {
   const { sales, tasks } = reportsLineChartData;
 
-  const [selectedYear, setSelectedYear] = useState(2000);
+  const [selectedYear, setSelectedYear] = useState(0);
   const [selectedDataIndex, setSelectedDataIndex] = useState(0);
 
   useEffect(() => {
@@ -101,22 +96,80 @@ function Dashboard() {
   return (
     <DashboardLayout>
       <DashboardNavbar />
-      <div style={{ display: "flex" }}>
-        <MapChart title="Febre Amarela em Humanos" data={humanData[selectedDataIndex].estados} />
-        <MapChart title="Febre Amarela em PNHs" data={pnhData[selectedDataIndex].estados} />
+      <div
+        style={{
+          width: "100%",
+          background: "white",
+          border: "1px solid #CDCDCD",
+          borderRadius: 8,
+          paddingBlock: 12,
+          paddingInline: 8,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <MapChart
+            title="Febre Amarela em Humanos"
+            color="#e8130c"
+            data={humanData[selectedDataIndex].estados}
+          />
+          <MapChart
+            title="Febre Amarela em PNHs"
+            color="#ff7d26"
+            data={pnhData[selectedDataIndex].estados}
+          />
+        </div>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+          <Box sx={{ width: "70%", justifyContent: "space-between" }}>
+            <Slider
+              aria-label="Restricted values"
+              defaultValue={50}
+              valueLabelFormat={valueLabelFormat}
+              getAriaValueText={valuetext}
+              step={null}
+              valueLabelDisplay="auto"
+              marks={marks}
+              onChange={(e, val) => setSelectedYear(val)}
+            />
+          </Box>
+        </Box>
       </div>
-      <Box sx={{ width: "100%" }}>
-        <Slider
-          aria-label="Restricted values"
-          defaultValue={50}
-          valueLabelFormat={valueLabelFormat}
-          getAriaValueText={valuetext}
-          step={null}
-          valueLabelDisplay="auto"
-          marks={marks}
-          onChange={(e, val) => setSelectedYear(val)}
-        />
-      </Box>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div
+          style={{
+            width: "50%",
+            paddingBlock: 12,
+            paddingInline: 8,
+            background: "white",
+            marginTop: 12,
+            border: "1px solid #CDCDCD",
+            borderRadius: 8,
+          }}
+        >
+          <LineChart />
+        </div>
+        <div
+          style={{
+            width: "45%",
+            paddingBlock: 12,
+            paddingInline: 8,
+            background: "white",
+            marginTop: 12,
+            border: "1px solid #CDCDCD",
+            borderRadius: 8,
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <img
+            alt="test"
+            style={{ width: "100%" }}
+            src="https://www.cnpm.embrapa.br/projetos/car/2018/BRASIL_areasdedicadaspreservacao_CAR2018.jpg"
+          />
+        </div>
+      </div>
     </DashboardLayout>
   );
 }
